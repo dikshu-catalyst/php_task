@@ -4,17 +4,17 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: center;
     width: 100%;
 }
 
-form {
+.form {
     background: #c7c7c7;
     padding: 10%;
     border-radius:5%;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 label {
@@ -35,4 +35,9 @@ input {
 #image-container img {
     margin-right: 10px; 
     margin-bottom: 10px; 
+}
+
+#delete{
+    color: red;
+    
 }
