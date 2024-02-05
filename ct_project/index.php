@@ -1,5 +1,14 @@
 <?php
 include 'data.php';
+
+
+if(isset($_POST['deleteButton'])) {
+    $deleteUserId = $_POST['deleteUserId'];
+    $deleteQuery = "DELETE FROM image WHERE userId = '$deleteUserId'";
+    mysqli_query($conn, $deleteQuery);
+    // Refresh the page or redirect as needed
+    header("Location: ".$_SERVER['PHP_SELF']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +24,7 @@ include 'data.php';
        
 </head>
 <body>
-    <form method="post" id="data" action="#" enctype="multipart/form-data">
+    <form class="form" method="post" id="data" action="#" enctype="multipart/form-data">
         <label for="userId">User ID:</label>
         <input type="text" id="userId" name="userId" required>
 
@@ -28,21 +37,38 @@ include 'data.php';
     </form>
 
     <div id="image-container">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Password</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+        
     <?php 
-        
-            $sql = "SELECT * FROM image";
-            $result  = mysqli_query($conn,$sql);
-            if(mysqli_num_rows($result)>0){
-            while($row = mysqli_fetch_assoc($result))  
-            {  
-                echo "id: ".$row["id"].", user id: ".$row["userId"].", password: ".$row["password"]."" ;
-                echo '<img src="assets/uploads/' . $row['image'] . '" alt="Uploaded Image" height="50" width="50">';
-                echo '<br>';
+        $sql = "SELECT * FROM image";
+        $result  = mysqli_query($conn,$sql);
+        if(mysqli_num_rows($result) > 0){
+            while($row = mysqli_fetch_assoc($result)) {  
+                echo '<tr>';
+                echo '<td>'.$row["id"].'</td>';
+                echo '<td>'.$row["userId"].'</td>';
+                echo '<td>'.$row["password"].'</td>';
+                echo '<td><img src="assets/uploads/' . $row['image'] . '" alt="Uploaded Image" height="50" width="50"></td>';
+                echo '<td>';
+                echo '<form method="post" action="#">';
+                echo '<input type="hidden" name="deleteUserId" value="' . $row['userId'] . '">';
+                echo '<input id="delete" type="submit" name="deleteButton" value="Delete">';
+                echo '</form>';
+                echo '</td>';
+                echo '</tr>';
             }
-            }else{ echo "No result";
+        } else { 
+            echo '<tr><td colspan="5">No result</td></tr>';
         }
-        
     ?>
+    </table>
     </div>
 
 </body>
